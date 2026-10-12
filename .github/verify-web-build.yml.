@@ -1,0 +1,39 @@
+name: Verificar compilacao do Premier Pro
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      NODE_ENV: production
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_PUBLIC_MARBLE_API_URL: https://api.marblecms.com
+      DATABASE_URL: postgresql://opencut:opencut@localhost:5432/opencut
+      BETTER_AUTH_SECRET: premier-pro-build-check-secret
+      UPSTASH_REDIS_REST_URL: http://localhost:8079
+      UPSTASH_REDIS_REST_TOKEN: example_token
+      MARBLE_WORKSPACE_KEY: placeholder
+      FREESOUND_CLIENT_ID: placeholder
+      FREESOUND_API_KEY: placeholder
+
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.18
+
+      - name: Instalar dependencias
+        run: bun install --frozen-lockfile
+
+      - name: Compilar aplicacao
+        run: bun run build:web
