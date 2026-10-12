@@ -1,0 +1,44 @@
+name: Importar OpenCut para Premier Pro
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  importar:
+    name: Importar codigo-fonte
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter repositorio Premiere Pro
+        uses: actions/checkout@v4
+
+      - name: Obter codigo do OpenCut Classic
+        run: |
+          git clone --depth 1 \
+            https://github.com/OpenCut-app/opencut-classic.git \
+            /tmp/opencut
+
+      - name: Copiar codigo para Premiere Pro
+        run: |
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            /tmp/opencut/ ./
+
+      - name: Guardar codigo no GitHub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Importar codigo base do OpenCut Classic"
+            git push
+          else
+            echo "Nao existem alteracoes para guardar."
+          fi
