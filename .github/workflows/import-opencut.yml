@@ -1,44 +1,82 @@
-name: Importar OpenCut para Premier Pro
+name: Premiere Pro — Compilar APK Android
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "android/**"
+      - ".github/workflows/build-apk.yml"
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: premiere-pro-android-build
+  cancel-in-progress: false
 
 jobs:
-  importar:
-    name: Importar codigo-fonte
+  build-apk:
+    name: Compilar e empacotar APK
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
-      - name: Obter repositorio Premiere Pro
+      - name: Obter código do repositório
         uses: actions/checkout@v4
 
-      - name: Obter codigo do OpenCut Classic
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Verificar projeto Android
+        shell: bash
         run: |
-          git clone --depth 1 \
-            https://github.com/OpenCut-app/opencut-classic.git \
-            /tmp/opencut
-
-      - name: Copiar codigo para Premiere Pro
-        run: |
-          rsync -a \
-            --exclude='.git' \
-            --exclude='.github' \
-            /tmp/opencut/ ./
-
-      - name: Guardar codigo no GitHub
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add -A
-
-          if ! git diff --cached --quiet; then
-            git commit -m "Importar codigo base do OpenCut Classic"
-            git push
-          else
-            echo "Nao existem alteracoes para guardar."
+          if [ ! -f "android/gradlew" ]; then
+            echo "::error::Não foi encontrado android/gradlew."
+            echo "É necessário preparar o projeto Android antes de compilar o APK."
+            exit 1
           fi
+
+          chmod +x android/gradlew
+
+      - name: Compilar APK de lançamento
+        working-directory: android
+        run: ./gradlew --no-daemon assembleRelease
+
+      - name: Localizar APK gerado
+        id: apk
+        shell: bash
+        run: |
+          APK_PATH="$(find android -type f \
+            -path '*/build/outputs/apk/*/*.apk' \
+            ! -name '*-androidTest.apk' \
+            | head -n 1)"
+
+          if [ -z "$APK_PATH" ]; then
+            echo "::error::A compilação terminou sem produzir um APK."
+            exit 1
+          fi
+
+          mkdir -p release
+          cp "$APK_PATH" release/Premiere-Pro.apk
+          echo "path=release/Premiere-Pro.apk" >> "$GITHUB_OUTPUT"
+
+      - name: Criar ZIP para descarregar
+        run: |
+          cd release
+          zip -9 Premiere-Pro-Android.zip Premiere-Pro.apk
+
+      - name: Guardar APK e ZIP como artefactos
+        uses: actions/upload-artifact@v4
+        with:
+          name: Premiere-Pro-Android
+          path: |
+            release/Premiere-Pro.apk
+            release/Premiere-Pro-Android.zip
+          if-no-files-found: error
+          retention-days: 30
