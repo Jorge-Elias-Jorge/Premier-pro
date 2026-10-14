@@ -1,66 +1,41 @@
 <!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Premier Pro</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Premier Pro</title>
+<link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <header>
-    <h1>Premier Pro</h1>
-    <button id="importBtn">Importar</button>
-    <input id="mediaInput" type="file" accept="video/*,audio/*,image/*" multiple hidden />
-    <button id="srtBtn" disabled>Exportar SRT</button>
-  </header>
-
-  <main>
-    <section id="preview">
-      <video id="video" controls playsinline></video>
-      <div id="emptyState">
-        <h2>Editor de vídeo offline</h2>
-        <p>Importe vídeos, áudios ou imagens para começar.</p>
-      </div>
-    </section>
-
-    <section id="tools">
-      <button id="splitBtn" disabled>Dividir</button>
-      <button id="deleteBtn" disabled>Excluir</button>
-      <button id="textBtn">Texto</button>
-      <button id="captionBtn">Legenda</button>
-    </section>
-
-    <section id="editor">
-      <div id="clipProperties" class="panel">
-        <h3>Propriedades</h3>
-        <div id="propertiesEmpty">Selecione um clipe na linha do tempo.</div>
-        <div id="propertiesForm" hidden>
-          <label>Início
-            <input id="clipStart" type="number" step="0.1" min="0" />
-          </label>
-          <label>Fim
-            <input id="clipEnd" type="number" step="0.1" min="0" />
-          </label>
-          <label>Texto / legenda
-            <textarea id="clipText" rows="3" placeholder="Escreva o texto deste clipe"></textarea>
-          </label>
-        </div>
-      </div>
-
-      <div id="captions" class="panel">
-        <h3>Legendas</h3>
-        <div id="captionList"></div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div id="timeline">
-      <div id="clips"></div>
-      <div id="playhead"></div>
-    </div>
-  </footer>
-
-  <script src="app.js"></script>
+<header>
+<h1>Premier Pro</h1>
+<button id="importBtn">Importar</button>
+<input id="mediaInput" type="file" accept="video/*,audio/*,image/*" multiple hidden/>
+<button id="saveBtn">Salvar</button>
+<button id="srtBtn">SRT</button>
+<button id="exportBtn">Exportar vídeo</button>
+</header>
+<main>
+<section id="preview">
+<video id="video" playsinline muted></video>
+<div id="textOverlay"></div>
+<div id="empty"><h2>Premier Pro 1.0</h2><p>Editor offline profissional.<br>Importe mídia para começar.</p></div>
+</section>
+<section id="tools">
+<button id="splitBtn" disabled>Dividir</button>
+<button id="dupBtn" disabled>Duplicar</button>
+<button id="delBtn" disabled class="danger">Excluir</button>
+<button id="textBtn">Texto</button>
+<button id="capBtn">Legenda</button>
+<button id="playBtn">Reproduzir</button>
+</section>
+<section id="panels">
+<div class="panel"><h3>Propriedades do clipe</h3><div id="noClip">Selecione um clipe na timeline.</div><div id="clipForm" hidden><label>Início<input id="cStart" type="number" step="0.1"/></label><label>Fim<input id="cEnd" type="number" step="0.1"/></label><label>Texto sobre o vídeo<input id="cText" type="text"/></label></div></div>
+<div class="panel"><h3>Legendas</h3><div id="caps"></div></div>
+</section>
+</main>
+<footer><div id="timeline"><div id="track"></div><div id="head"></div></div></footer>
+<canvas id="renderCanvas" hidden></canvas>
+<script src="app.js"></script>
 </body>
 </html>
