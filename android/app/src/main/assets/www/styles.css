@@ -1,0 +1,110 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b0b0f;
+  --panel: #15151c;
+  --accent: #7c5cff;
+  --text: #f4f4f6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--panel);
+}
+
+h1 { font-size: 18px; margin: 0 auto 0 0; }
+
+button, select, input {
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: #1d1d26;
+  color: var(--text);
+  font-size: 15px;
+  padding: 0 12px;
+}
+
+button {
+  background: var(--accent);
+  border: 0;
+  font-weight: 600;
+}
+
+button:disabled { opacity: .5; }
+
+main {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#preview video {
+  width: 100%;
+  max-height: 42vh;
+  border-radius: 14px;
+  background: black;
+}
+
+#captions {
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+
+#cueList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+
+#cueList li {
+  background: #1d1d26;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#cueList input { flex: 1; }
+
+footer {
+  height: 90px;
+  background: var(--panel);
+  padding: 10px;
+}
+
+#timeline {
+  height: 100%;
+  border-radius: 10px;
+  background: #101018;
+  position: relative;
+  overflow: hidden;
+}
+
+#playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  left: 0;
+}

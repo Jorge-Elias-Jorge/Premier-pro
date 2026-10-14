@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Premier Pro</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Premier Pro</h1>
+    <button id="importBtn">Importar vídeo</button>
+    <input id="videoInput" type="file" accept="video/*,audio/*" hidden />
+  </header>
+
+  <main>
+    <section id="preview">
+      <video id="video" controls playsinline></video>
+      <p id="empty">Importe um vídeo para começar a editar.</p>
+    </section>
+
+    <section id="captions">
+      <h2>Legendas com IA</h2>
+      <label>Chave da API Groq
+        <input id="apiKey" type="password" placeholder="Cole sua chave gratuita" />
+      </label>
+      <label>Idioma
+        <select id="language">
+          <option value="pt">Português</option>
+          <option value="en">Inglês</option>
+          <option value="es">Espanhol</option>
+        </select>
+      </label>
+      <button id="generateBtn" disabled>Gerar legendas</button>
+      <button id="srtBtn" disabled>Baixar SRT</button>
+      <div id="status"></div>
+      <ul id="cueList"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <div id="timeline">
+      <div id="playhead"></div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

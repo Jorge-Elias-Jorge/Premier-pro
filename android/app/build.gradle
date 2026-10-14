@@ -1,18 +1,25 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    namespace "com.jorgeelias.premierpro"
+    namespace 'com.jorgeelias.premierpro'
     compileSdk 35
+
     defaultConfig {
         applicationId "com.jorgeelias.premierpro"
-        minSdkVersion 24
-        targetSdkVersion 35
+        minSdk 24
+        targetSdk 35
         versionCode 1
         versionName "1.0.0"
     }
+
     buildTypes {
-        release { minifyEnabled false }
+        release {
+            minifyEnabled false
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -20,8 +27,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation project(':capacitor-android')
+    implementation 'androidx.webkit:webkit:1.11.0'
 }

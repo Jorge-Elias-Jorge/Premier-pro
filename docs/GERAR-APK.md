@@ -1,13 +1,20 @@
-# Gerar o APK do Premier Pro
+# Gerar o APK automaticamente
 
-1. Instale Node.js 20+, Bun, JDK 17 e Android Studio com SDK 35.
-2. Crie `apps/web/.env.local` com `VITE_GROQ_API_KEY=sua_chave`.
-3. Na raiz: `bun install`.
-4. Em `android/`: `npm install`.
-5. Gere a interface: `bun run build:web`.
-6. Se houver exportação estática: `mkdir -p android/www && cp -r apps/web/out/* android/www/`.
-7. Sincronize: `cd android && npm run cap:sync`.
-8. Gere o APK: `npm run apk:debug`.
-9. Instale: `adb install android/app/build/outputs/apk/debug/app-debug.apk`.
+O workflow `.github/workflows/build-apk.yml` compila o aplicativo automaticamente em cada envio para a branch `main`.
 
-O APK fica em `android/app/build/outputs/apk/debug/app-debug.apk`.
+## Como baixar o APK
+
+1. Abra o repositório no GitHub.
+2. Vá em **Actions**.
+3. Abra o workflow **Build Android APK**.
+4. Aguarde terminar com sucesso.
+5. Em **Artifacts**, baixe **premier-pro-apk**.
+6. Instale o arquivo `app-debug.apk` no celular.
+
+## Funcionamento
+
+- O aplicativo abre offline.
+- Permite importar vídeo ou áudio.
+- Possui preview, linha do tempo e exportação SRT.
+- Gera legendas automáticas usando a API Groq/Whisper quando há internet e chave da API.
+- A chave fica guardada apenas no armazenamento local do celular.
