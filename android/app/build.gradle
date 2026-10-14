@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.jorgeelias.premierpro'
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.jorgeelias.premierpro"
         minSdk 24
-        targetSdk 35
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
     }
@@ -27,6 +27,4 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.webkit:webkit:1.11.0'
 }
