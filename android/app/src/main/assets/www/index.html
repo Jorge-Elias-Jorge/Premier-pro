@@ -4,46 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Premier Pro</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { margin:0; height:100dvh; display:grid; place-items:center; background:#0b0b0f; color:#f4f4f6; font-family:system-ui,sans-serif; text-align:center; padding:24px; }
+    button { margin-top:16px; min-height:44px; padding:0 18px; border:0; border-radius:10px; background:#7c5cff; color:white; font-weight:600; }
+  </style>
 </head>
 <body>
-  <header>
+  <div>
     <h1>Premier Pro</h1>
-    <button id="importBtn">Importar vídeo</button>
-    <input id="videoInput" type="file" accept="video/*,audio/*" hidden />
-  </header>
-
-  <main>
-    <section id="preview">
-      <video id="video" controls playsinline></video>
-      <p id="empty">Importe um vídeo para começar a editar.</p>
-    </section>
-
-    <section id="captions">
-      <h2>Legendas com IA</h2>
-      <label>Chave da API Groq
-        <input id="apiKey" type="password" placeholder="Cole sua chave gratuita" />
-      </label>
-      <label>Idioma
-        <select id="language">
-          <option value="pt">Português</option>
-          <option value="en">Inglês</option>
-          <option value="es">Espanhol</option>
-        </select>
-      </label>
-      <button id="generateBtn" disabled>Gerar legendas</button>
-      <button id="srtBtn" disabled>Baixar SRT</button>
-      <div id="status"></div>
-      <ul id="cueList"></ul>
-    </section>
-  </main>
-
-  <footer>
-    <div id="timeline">
-      <div id="playhead"></div>
-    </div>
-  </footer>
-
-  <script src="app.js"></script>
+    <p id="message">A carregar o OpenCut…</p>
+    <button id="retry" hidden>Tentar novamente</button>
+  </div>
+  <script>
+    fetch('config.json')
+      .then(response => response.json())
+      .then(config => {
+        const url = config.appUrl;
+        if (!url || url.includes('SEU-OPENCUT')) {
+          document.getElementById('message').textContent = 'Configure a URL do seu OpenCut em config.json ou no secret OPENCUT_WEB_URL.';
+          document.getElementById('retry').hidden = false;
+          return;
+        }
+        location.replace(url);
+      })
+      .catch(() => {
+        document.getElementById('message').textContent = 'Não foi possível carregar a configuração do aplicativo.';
+        document.getElementById('retry').hidden = false;
+      });
+    document.getElementById('retry').addEventListener('click', () => location.reload());
+  </script>
 </body>
 </html>

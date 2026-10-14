@@ -26,6 +26,13 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Configure OpenCut web URL
+        env:
+          OPENCUT_WEB_URL: ${{ secrets.OPENCUT_WEB_URL }}
+        run: |
+          URL="${OPENCUT_WEB_URL:-https://SEU-OPENCUT.vercel.app}"
+          printf '{\n  "appUrl": "%s"\n}\n' "$URL" > android/app/src/main/assets/www/config.json
+
       - name: Accept Android licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
 
